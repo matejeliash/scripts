@@ -19,7 +19,7 @@ for file in "$@" ; do
 
 	ffmpeg -hwaccel vaapi -vaapi_device /dev/dri/renderD128 \
 	  -i "$file" \
-	  -c:v h264_vaapi  -profile:v high -preset quality -qp "$qp"   -vf 'format=nv12,hwupload' -map 0   -c:a copy  -sn "$name"
+	  -c:v h264_vaapi  -profile:v high -preset quality -qp "$qp"   -vf 'format=nv12,hwupload' -map 0   -c:a aac -b:a 200k -ac 2  -sn "$name"
 
 
 done
