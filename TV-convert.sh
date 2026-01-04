@@ -69,7 +69,8 @@ setup_video_encoding(){
     -show_entries stream=index,codec_name,pix_fmt -of csv=p=0 \
     "$input_file")"
 
-    video_stream_id="$(echo "$video_data" | cut -d ',' -f 1 )"
+    video_stream_id="$(echo "$video_data" | cut -d ',' -f 1  | head -n 1)"
+    echo "$video_stream_id"
 
     echo "video data: $video_data"
     if [ "$video_data" = "${video_stream_id},h264,yuv420p" ] ; then
@@ -105,7 +106,7 @@ setup_audio_encoding(){
         ffmpeg_audio=" -map 0:$selected_audio_id   -c:a copy "
 
     else
-        ffmpeg_audio=" -map 0:$selected_audio_id -c:a aac -b:a 160k -ac 2 "
+        ffmpeg_audio=" -map 0:$selected_audio_id -c:a aac -b:a 200k -ac 2 "
         echo "Audio has to be converted."
 
     fi
@@ -116,6 +117,14 @@ setup_audio_encoding(){
 
 
 name=$(rename "$1")
+
+if [ -f "$name" ] ; then
+    echo "File is already present."
+    exit 0
+
+fi
+
+
 set_hwaccel
 setup_audio_encoding
 print_separator
@@ -134,13 +143,13 @@ fi
 
 
 
- # echo "This command will be run: "
- # echo "ffmpeg $ffmpeg_hwaccel -y -i $1  $ffmpeg_video   $ffmpeg_audio  -map 0:s? -c:s copy $name"
- # echo "Run this command [y/n]:"
- # read answer
+ echo "This command will be run: "
+ echo "ffmpeg $ffmpeg_hwaccel -y -i $1  $ffmpeg_video   $ffmpeg_audio  -map 0:s? -c:s copy $name"
+ echo "Run this command [y/n]:"
+ read answer
 
 
 
 # if [ "$answer" = "y" ]; then
-   ffmpeg $ffmpeg_hwaccel -y -i "$1"  $ffmpeg_video   $ffmpeg_audio -map 0:s:? -c:s copy  "$name"
+   ffmpeg $ffmpeg_hwaccel -y -i "$1"  $ffmpeg_video   $ffmpeg_audio -sn "$name"
 # fi

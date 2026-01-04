@@ -29,4 +29,7 @@ gsettings set org.gnome.desktop.wm.keybindings switch-applications "[]"
 
 gsettings set org.gnome.desktop.wm.keybindings switch-windows "['<Alt>Tab', '<Super>Tab']"
 
+gsettings set org.gnome.shell.window-switcher current-workspace-only false
+
+
 echo "all configured"
