@@ -69,8 +69,7 @@ setup_video_encoding(){
     -show_entries stream=index,codec_name,pix_fmt -of csv=p=0 \
     "$input_file")"
 
-    video_stream_id="$(echo "$video_data" | cut -d ',' -f 1  | head -n 1)"
-    echo "$video_stream_id"
+    video_stream_id="$(echo "$video_data" | cut -d ',' -f 1 )"
 
     echo "video data: $video_data"
     if [ "$video_data" = "${video_stream_id},h264,yuv420p" ] ; then
@@ -143,13 +142,15 @@ fi
 
 
 
- echo "This command will be run: "
- echo "ffmpeg $ffmpeg_hwaccel -y -i $1  $ffmpeg_video   $ffmpeg_audio  -map 0:s? -c:s copy $name"
- echo "Run this command [y/n]:"
- read answer
+  echo "This command will be run: "
+  echo "ffmpeg $ffmpeg_hwaccel -y -i $1  $ffmpeg_video   $ffmpeg_audio  -map 0:s? -c:s copy $name"
+  echo "Run this command [y/n]:"
+  read answer
 
 
 
 # if [ "$answer" = "y" ]; then
-   ffmpeg $ffmpeg_hwaccel -y -i "$1"  $ffmpeg_video   $ffmpeg_audio -sn "$name"
+   #ffmpeg $ffmpeg_hwaccel -y -i "$1"  $ffmpeg_video   $ffmpeg_audio -map 0:s:? -c:s copy  "$name"
+   #ffmpeg $ffmpeg_hwaccel -y -i "$1"  $ffmpeg_video   $ffmpeg_audio -map 0:s:? -s "$name"
+   ffmpeg $ffmpeg_hwaccel -y -i "$1"  $ffmpeg_video   $ffmpeg_audio  -sn "$(date).mkv"
 # fi

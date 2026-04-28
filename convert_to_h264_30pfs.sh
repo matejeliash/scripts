@@ -1,0 +1,15 @@
+#!/bin/sh
+
+
+
+
+filename="$(basename "$1")"
+
+ffmpeg   -vaapi_device /dev/dri/renderD128 \
+  -y -i "$1"  \
+  -map 0:0 \
+  -c:v h264_vaapi  -profile:v high    -rc_mode 4  -global_quality 18 -b:v 0  -vf format=nv12,hwupload,fps=30    \
+  "ICQ-$filename"
+
+
+
